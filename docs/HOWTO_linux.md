@@ -15,7 +15,7 @@ sudo apt-get install doxygen
 sudo apt-get install graphviz
 ```
 
-Download and install [Atom text editor](https://atom.io/).
+Download and install [Atom](https://atom.io/) or [Visual Studio Code](https://code.visualstudio.com/) text editor.
 
 Download the latest [AVR Toolchain](https://www.microchip.com/mplab/avr-support/avr-and-arm-toolchains-c-compilers) for Linux, such as [AVR 8-bit Toolchain 3.6.2 - Linux 64-bit](https://www.microchip.com/mymicrochip/filehandler.aspx?ddocname=en607660).
 
@@ -27,11 +27,11 @@ sudo tar -xzvf avr8-gnu-toolchain-3.6.2.1759-linux.any.x86_64.tar.gz -C /opt/
 
 [Download this template](https://gitlab.com/tomas.fryza/avr-template/-/archive/master/avr-template-master.tar.gz) to local computer and use it to start your own repository.
 
-Go to `projects/01-demo` directory, open `Makefile`, find and change (if necessary) line with path to AVR 8-bit toolchain.
+Go to `projects` folder, open `projects.in`, find and change (if necessary) line with path to AVR 8-bit toolchain.
 
 ```bash
 # Change directory
-cd project
+cd projects
 # Modify projects.in
 vim projects.in
 # Check path to toolchain
@@ -61,7 +61,7 @@ make list
 make size
 ```
 
-To create a new project, make a new directory within `projects/` folder, write a new `main.c` source file, and copy `Makefile` from previous project.
+To create a new project, make a new directory within `projects` folder, write a new `main.c` source file, and copy `Makefile` from previous project.
 
 ```bash
 # Make a new directory
@@ -69,7 +69,7 @@ mkdir name_of_new_project
 # Change directory
 cd name_of_new_project
 # Copy source file and Makefile from 01-demo project
-cp ../01-demo/main.c ../01-demo/Makefile .
+cp ../01-demo/main.c ../01-demo/Makefile ../01-demo/README.md .
 # Edit main.c :)
 ```
 
