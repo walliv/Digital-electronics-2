@@ -29,8 +29,6 @@ void GPIO_toggle(volatile uint8_t *reg_name, uint8_t pin_num)
 }
 uint8_t GPIO_read(volatile uint8_t *reg_name, uint8_t pin_num)
 {
-    *reg_name |= _BV(pin_num);
-    uint8_t val = (reg_name & (1 << pin_num)) >> pin_num;
-    return val;
+    return ((*reg_name & _BV(pin_num)) >> pin_num);
 }
 
