@@ -176,7 +176,8 @@ lcd_putc('%');
             lcd_putc(0xff);
             break;
         case 12:
-            lcd_gotoxy(12,1);
+            lcd_gotoxTIM_config_prescaler(TIM1, TIM_PRESC_256);
+    TIM_config_interrupt(TIM1, TIM_OVERFLOW_ENABLE);y(12,1);
             lcd_putc(0xff);
             break;
         case 13:
