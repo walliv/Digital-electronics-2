@@ -14,8 +14,10 @@
 #include <stdlib.h>         // itoa() function
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include "gpio.h"
 #include "timer.h"
 #include "uart.h"
+
 
 /* Typedef -----------------------------------------------------------*/
 typedef enum {
@@ -35,6 +37,7 @@ state_t current_state = IDLE_STATE;
 void fsm_random(void);
 extern uint8_t rand4_asm(uint8_t current);
 extern uint8_t rand8_asm(uint8_t current);
+extern void burst_asm(uint8_t number);
 
 /* Functions ---------------------------------------------------------*/
 /* Call assembly functions to generate psudo-random values. */
@@ -92,6 +95,8 @@ int main(void)
 {
     uart_init(UART_BAUD_SELECT(UART_BAUD_RATE, F_CPU)); // 8N1
 
+    GPIO_config_output(&DDRB, PB5);
+
     /* Timer1
      * TODO: Enable overflow interrupt every 33 msec. */
     TIM_config_prescaler(TIM1, TIM_PRESC_8);
@@ -99,6 +104,8 @@ int main(void)
 
     sei();
     uart_puts("\r\n---LFSR pseudo-random generator---\r\n");
+
+    int i = 0;
 
     for (;;) {
     }
@@ -111,5 +118,5 @@ int main(void)
  * Update state of the FSM. */
 ISR(TIMER1_OVF_vect)
 {
-    fsm_random();
+    burst_asm();
 }
