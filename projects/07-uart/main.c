@@ -53,8 +53,8 @@ int main(void)
     GPIO_write(&ADCSRA,ADEN,1);
     GPIO_write(&ADMUX,REFS0,1);
 
-    GPIO_write(&ADMUX,MUX0,0); 
-    GPIO_write(&ADMUX,MUX1,0); 
+    GPIO_write(&ADMUX,MUX0,0);
+    GPIO_write(&ADMUX,MUX1,0);
     GPIO_write(&ADMUX,MUX2,0); 
     GPIO_write(&ADMUX,MUX3,0);
 

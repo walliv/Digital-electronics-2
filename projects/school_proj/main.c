@@ -4,10 +4,6 @@
 #include "timer.h"
 #include "gpio.h"
 
-/* Typedef -----------------------------------------------------------*/
-/* Define ------------------------------------------------------------*/
-#define UART_BAUD_RATE 9600
-
 /* Variables ---------------------------------------------------------*/
 /* Function prototypes -----------------------------------------------*/
 
@@ -26,78 +22,73 @@
 int main(void)
 {
 
-    GPIO_config_output(&DDRD, PD5);
-    DDRC = 0;
+    //Configer output pin for PWM regulation(otput pin OC1A)
+    GPIO_config_output(&DDRD, PB1);
 
-    /* ADC
-     * TODO: Configure ADC reference, clock source, enable ADC module, 
-     *       and enable conversion complete interrupt */
-    GPIO_write(&ADCSRA,ADEN,1);
+    //Set pins PC0, PC1 as ADC inputs
+    DDRC &= ~(_BV(PC0) | _BV(PC1));
+    
+    //enable ADC
+    GPIO_write(&ADCSRA,ADEN,1);             
+    
+    //set refference voltage to 5V
     GPIO_write(&ADMUX,REFS0,1);
 
-    GPIO_write(&ADMUX,MUX0,0); 
-    GPIO_write(&ADMUX,MUX1,0); 
-    GPIO_write(&ADMUX,MUX2,0); 
-    GPIO_write(&ADMUX,MUX3,0);
-
+    //set input channel to ADC0(pin PC0)
+    ADMUX &= ~(_BV(MUX0) | _BV(MUX1) | _BV(MUX2) | _BV(MUX3));
+    
+    //set ADC prescaler as 64
     GPIO_write(&ADCSRA,ADPS0,0);
     GPIO_write(&ADCSRA,ADPS1,1);
     GPIO_write(&ADCSRA,ADPS2,1);
-    GPIO_write(&ADCSRA,ADIE,1);
 
-    GPIO_write(&TCCR1A,WGM11,1);
+    //enable ADC interrupt
+    //GPIO_write(&ADCSRA,ADIE,1);           //probably redundant
+
+    //set ADC trigger on Timer0 overflow
+    GPIO_write(&ADCSRB,ADTS0,0);
+    GPIO_write(&ADCSRB,ADTS1,0);
+    GPIO_write(&ADCSRB,ADTS2,1);
+
+
+    //set Timer0 prescaler and interrupt (controls ADC)
+    TIM_config_prescaler(TIM0, TIM_PRESC_64);
+    TIM_config_interrupt(TIM0, TIM_OVERFLOW_ENABLE);
+
+    //set Timer1 prescaler and interrupt (controls PWM)
+    TIM_config_prescaler(TIM1, TIM_PRESC_8);
+    TIM_config_interrupt(TIM1, TIM_OVERFLOW_ENABLE);
+
+    //configure Timer1 for Fast PWM operation (WGM13:0 = 14)
+    GPIO_write(&TCCR1A,WGM11,1);    
     GPIO_write(&TCCR1B,WGM12,1);
     GPIO_write(&TCCR1B,WGM13,1);
 
-    GPIO_write(&TCCR1A, COM1A1, 1);
-    GPIO_write(&TCCR1A, COM1A0, 1);
+    //defines mode when OC1A pin is enabled on compare match and clears when BOTTOM
+    GPIO_write(&TCCR1A, COM1A1,1);
+    GPIO_write(&TCCR1A, COM1A0,1);
 
+    ICR1 = 39999;               //defines TOP of the TIM1, causes counter reset to BOTTOM
 
-    ICR1 = 20000;
-
-    OCR1A = ICR1 - horizontal;
-
-    /* Timer1
-     * TODO: Configure Timer1 clock source and enable overflow 
-     *       interrupt */
-    TIM_config_prescaler(TIM1, TIM_PRESC_64);
-    TIM_config_interrupt(TIM1, TIM_OVERFLOW_ENABLE);
-
-    // UART: asynchronous, 8-bit data, no parity, 1-bit stop
-
-    // Enables interrupts by setting the global interrupt mask
     sei();
 
-
-    // Infinite loop
     for (;;) {
-        
+        OCR1A = ICR1 - horizontal;              //updates on BOTTOM
     }
 
-    // Will never reach this
     return (0);
 }
 
-/**
- *  Brief: Timer1 overflow interrupt routine. Start ADC conversion.
- */
-ISR(TIMER1_OVF_vect)
-{
-    count += 1;
-    // TODO: Start ADC conversion
-    GPIO_write(&ADCSRA,ADSC,1);
+//interrupt triggers ADC conversion
+ISR(TIMER0_OVF_vect)
+{}
 
-}
+ISR(TIMER1_OVF_vect)            //overflow interrupt
+{}
 
-/**
- *  Brief: ADC complete interrupt routine. Update LCD and UART 
- *         transmiter.
- */
-ISR(ADC_vect)
+ISR(ADC_vect)       //conversion done interrupt
 {
 	// Read 10-bit ACD value
-    //value = ADC;
-    // TODO: Update LCD and UART transmite
     switch (ADMUX)
     {
         case 0xC0:
