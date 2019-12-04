@@ -16,7 +16,6 @@
 
  uint16_t horizontal = 0;
  uint16_t vertical = 0;
- uint8_t count = 0;
  char uart_string[4];
  char counter_string[4];
 int main(void)
@@ -35,7 +34,12 @@ int main(void)
     GPIO_write(&ADMUX,REFS0,1);
 
     //set input channel to ADC0(pin PC0)
-    ADMUX &= ~(_BV(MUX0) | _BV(MUX1) | _BV(MUX2) | _BV(MUX3));
+    //ADMUX &= ~(_BV(MUX0) | _BV(MUX1) | _BV(MUX2) | _BV(MUX3));
+	
+    GPIO_write(&ADMUX,MUX0,0);
+    GPIO_write(&ADMUX,MUX1,0);
+    GPIO_write(&ADMUX,MUX2,0); 
+    GPIO_write(&ADMUX,MUX3,0);
     
     //set ADC prescaler as 64
     GPIO_write(&ADCSRA,ADPS0,0);
@@ -43,12 +47,12 @@ int main(void)
     GPIO_write(&ADCSRA,ADPS2,1);
 
     //enable ADC interrupt
-    //GPIO_write(&ADCSRA,ADIE,1);           //probably redundant
+    GPIO_write(&ADCSRA,ADIE,1);           //probably redundant
 
     //set ADC trigger on Timer0 overflow
-    GPIO_write(&ADCSRB,ADTS0,0);
-    GPIO_write(&ADCSRB,ADTS1,0);
-    GPIO_write(&ADCSRB,ADTS2,1);
+    //GPIO_write(&ADCSRB,ADTS0,0);
+    //GPIO_write(&ADCSRB,ADTS1,0);
+    //GPIO_write(&ADCSRB,ADTS2,1);
 
 
     //set Timer0 prescaler and interrupt (controls ADC)
@@ -69,11 +73,32 @@ int main(void)
     GPIO_write(&TCCR1A, COM1A0,1);
 
     ICR1 = 39999;               //defines TOP of the TIM1, causes counter reset to BOTTOM
+	
+    uart_init(UART_BAUD_SELECT(UART_BAUD_RATE, F_CPU));
 
     sei();
 
     for (;;) {
-        OCR1A = ICR1 - horizontal;              //updates on BOTTOM
+        //OCR1A = ICR1 - horizontal;              //updates on BOTTOM
+        //_delay_ms(2000);
+        /*OCR1A = ICR1 - 4400;             
+        _delay_ms(100);*/
+        //OCR1A = 1700 + (horizontal * 2);
+
+        OCR1A = 1500;
+        _delay_ms(1000);
+        OCR1A = 3000;
+        _delay_ms(1000);
+        OCR1A = 5300; 
+        _delay_ms(1000);
+
+        itoa(horizontal, uart_string, 10);
+        uart_puts(uart_string);
+        uart_puts("\r\n");
+
+        /*itoa(vertical,uart_string, 10);
+        uart_puts(uart_string);
+        uart_puts("\r\n");*/
     }
 
     return (0);
@@ -81,7 +106,9 @@ int main(void)
 
 //interrupt triggers ADC conversion
 ISR(TIMER0_OVF_vect)
-{}
+{
+   GPIO_write(&ADCSRA,ADSC,1);
+}
 
 ISR(TIMER1_OVF_vect)            //overflow interrupt
 {}
@@ -93,17 +120,16 @@ ISR(ADC_vect)       //conversion done interrupt
     {
         case 0xC0:
             horizontal = ADC;
-            ADC = 0;
             ADMUX = 0xC1;
             break;
         case 0xC1:
             vertical = ADC;
-            ADC = 0;
             ADMUX = 0xC0;
             break;
         default:
             //Default code
             break;
     }
+	ADC = 0;
     
 }
