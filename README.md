@@ -39,8 +39,16 @@ avr-template$ tree
 └── README.md
 ```
 
-In folder `docs` all manuals are stored. Folder `hw` contains KiCad schematic of Arduino shields used in the course. All projects are located within `projects` folder. The `01-demo` example contains default C-code source file `main.c`, `README.md`, and `Makefile`. Default example of ASM source file `rand.S` is located in the `09-asm_random` folder. Source and header files of LCD, TWI, and UART libraries are located in the `library` folder.
+In folder `docs` all manuals and datasheets are stored. Folder `hw` contains KiCad schematic of Arduino shields used in the course. All projects are located within `projects` folder. The `01-demo` example contains default C-code source file `main.c`, `README.md`, and `Makefile`. Then we have  Default example of ASM source file `rand.S` is located in the `09-asm_random` folder. Source and header files of LCD, TWI, segment display and UART libraries are located in the `library` folder.
 
+Breif description of what project folders deal with.
+
+| **Foler Name** | **Description** |
+| -------------- | --------------- |
+| 01-demo | Default C-code source file
+| 02-leds | Controls led blinking
+| 03-gpio | Basic funcitons for I/O port setting
+| 04-interrupts | Various 
 
 ## Hardware Components
 
@@ -89,3 +97,4 @@ Ubuntu     | 16.04, Xenial Xerus        | OK (2018-09-15) | Office
 # FYI: How to check OS version in Linux
 cat /etc/os-release
 ```
+## Project

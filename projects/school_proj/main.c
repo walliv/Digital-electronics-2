@@ -1,8 +1,12 @@
 #include <stdlib.h>             // itoa() function
 #include <avr/io.h>
+#include <util/delay.h>
 #include <avr/interrupt.h>
 #include "timer.h"
+#include "uart.h"
 #include "gpio.h"
+
+#define UART_BAUD_RATE 9600
 
 /* Variables ---------------------------------------------------------*/
 /* Function prototypes -----------------------------------------------*/
