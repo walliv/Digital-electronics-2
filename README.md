@@ -5,7 +5,7 @@
 
 # AVR Template
 
-#### Table of Contents
+## Table of Contents
 
 1. [Introduction](#introduction)
 2. [Hardware Components](#hardware-components)
@@ -17,29 +17,94 @@
 
 ## Introduction
 
-The repository contains AVR template for bachelor course *Digital Electronics 2* ([Winter 2019/2020](https://www.vutbr.cz/en/students/courses/detail/210896)) at Brno University of Technology, Czechia. The repository has the following hierarchy:
+The repository contains all lecture tasks for bachelor course *Digital Electronics 2* ([Winter 2019/2020](https://www.vutbr.cz/en/students/courses/detail/210896)) at Brno University of Technology, Czech Republic. The repository has the following hierarchy:
 
 ```bash
 avr-template$ tree
 .
 ├── docs
-│   └── hw
+│   ├── ATmega48A-PA-88A-PA-168A-PA-328-P-DS-DS40002061A.pdf
+│   ├── dht12_manual.pdf
+│   ├── ds3231_manual.pdf
+│   ├── esp8266_at_instruction_set.pdf
+│   ├── git-cheatsheet.pdf
+│   ├── HOWTO_linux.md
+│   ├── HOWTO_mac.md
+│   ├── HOWTO_windows.md
+│   └── hw
+│       ├── arduino_shield.kicad_pcb
+│       ├── arduino_shield.pdf
+│       ├── arduino_shield.pro
+│       ├── arduino_shield.sch
+│       ├── LCD_tlacitka.sch
+│       ├── led_7segment_.sch
+│       ├── mcu_modul.sch
+│       └── pcb_outline_drawings.sch
 ├── LICENSE
 ├── projects
-│   ├── 01-demo
-│   │   ├── main.c
-│   │   ├── Makefile
-│   │   └── README.md
-│   ├── 09-asm_random
-│   │   └── rand.S
-│   ├── library
-│   │   ├── inc
-│   │   └── src
-│   └── projects.in
+│   ├── library
+│   │   ├── inc
+│   │   │   ├── gpio.h
+│   │   │   ├── lcd_definitions.h
+│   │   │   ├── lcd.h
+│   │   │   ├── segment.h
+│   │   │   ├── timer.h
+│   │   │   ├── twi.h
+│   │   │   └── uart.h
+│   │   └── src
+│   │       ├── gpio.c
+│   │       ├── lcd.c
+│   │       ├── segment.c
+│   │       ├── timer.c
+│   │       ├── twi.c
+│   │       └── uart.c
+│   ├── projects.in
+│   ├── schprj
+│   │   ├── main.c
+│   │   ├── Makefile
+│   │   └── README.md
+│   ├── 01-demo
+│   │   ├── main.c
+│   │   ├── Makefile
+│   │   ├── Makefile.win
+│   │   └── README.md
+│   ├── 02-leds
+│   │   ├── main.c
+│   │   └── Makefile
+│   ├── 03-gpio
+│   │   ├── main.c
+│   │   └── Makefile
+│   ├── 04-interrupts
+│   │   ├── main.c
+│   │   └── Makefile
+│   ├── 05-segment
+│   │   ├── main.c
+│   │   └── Makefile
+│   ├── 06-lcd
+│   │   ├── main.c
+│   │   └── Makefile
+│   ├── 07-uart
+│   │   ├── main.c
+│   │   └── Makefile
+│   ├── 08-twi_scan
+│   │   ├── main.c
+│   │   └── Makefile
+│   ├── 08-twi_temperature
+│   │   ├── main.c
+│   │   └── Makefile
+│   ├── 09-asm_random
+│   │   ├── DEMO.lss
+│   │   ├── main.c
+│   │   ├── Makefile
+│   │   └── rand.S
+│   └── 09-burst
+│       ├── main.c
+│       ├── Makefile
+│       └── rand.S
 └── README.md
 ```
 
-In folder `docs` all manuals and datasheets are stored. Folder `hw` contains KiCad schematic of Arduino shields used in the course. All projects are located within `projects` folder. The `01-demo` example contains default C-code source file `main.c`, `README.md`, and `Makefile`. Then we have  Default example of ASM source file `rand.S` is located in the `09-asm_random` folder. Source and header files of LCD, TWI, segment display and UART libraries are located in the `library` folder.
+In folder `docs` all manuals and datasheets are stored. Folder `hw` contains KiCad schematic of Arduino shields used in the course. All projects are located within `projects` folder. Source and header files of LCD, TWI, segment display and UART libraries are located in the `library` folder.
 
 Breif description of what project folders deal with.
 
@@ -48,7 +113,15 @@ Breif description of what project folders deal with.
 | 01-demo | Default C-code source file
 | 02-leds | Controls led blinking
 | 03-gpio | Basic funcitons for I/O port setting
-| 04-interrupts | Various 
+| 04-interrupts | Led blinking using timer overflow interrupt
+| 05-segment | Controlling 7 segment display using segment.c library
+| 06-lcd | Provides code for two row LCD display and making custom characters
+| 07-uart | Send information via UART (USB) to computer
+| 08-twi_scan | Using I2C bus to find devices
+| 08-twi_temperature | Attempt to receive data from I2C bus
+| 09-asm_random | Random number generator using LSFR written in Assembly language
+| 09-burst | Attempt of burst generator in Assembly language
+| schprj | Controlling two servos using analog joystick (semestral project)
 
 ## Hardware Components
 
@@ -66,8 +139,8 @@ The following hardware components are mainly used in the lab.
 | [DHT12](https://arduino-shop.cz/arduino/1977-i2c-teplomer-a-vlhkomer-dht12-digitalni.html) | I2C humidity and temperature sensor | [Data sheet](docs/dht12_manual.pdf)
 | [DS3231](https://arduino-shop.cz/hledani.php?q=DS3231&n_q=) | I2C real time clock | [Data sheet](docs/ds3231_manual.pdf)
 | [ESP8266](https://arduino-shop.cz/arduino/911-internet-veci-je-tady-tcp-ip-wifi-esp8266-1420990568.html) | Wi-Fi module | [AT commands](docs/esp8266_at_instruction_set.pdf)
-| tbd | tbd | tbd
-
+| [Joystick PS2](https://arduino-shop.cz/arduino/884-arduino-joystick-ps2.html) | Analog Joystick HW-504 |
+| [Micro servo](https://arduino-shop.cz/arduino/897-arduino-servo-motor.html) | Micro servo SG90 | [Datasheet](https://components101.com/sites/default/files/component_datasheet/SG90%20Servo%20Motor%20Datasheet.pdf)
 
 ## References
 
@@ -82,11 +155,11 @@ The following hardware components are mainly used in the lab.
 9. Peter Fleury, [AVR-GCC libraries](http://homepage.hispeed.ch/peterfleury/avr-software.html)
 10. Wykys, [Tools for development of AVR microcontrollers](https://github.com/wykys/AVR-tools)
 
-
 ## Tested on Operating Systems
 
 **Name**   | **Version**                | **Result**      | **Note**
 ---------- | -------------------------- | --------------- | --------
+OpenSUSE   | 15.1, Leap                 | OK (2019-11-27) | Home
 Linux Mint | 18.3, Sylvia               | OK (2019-06-13) | Laptop
 Windows    | Windows 7                  | OK (2019-05-17) | Lab
 Linux Mint | 18.2, Sonya                | OK (2019-05-17) | Lab
@@ -97,4 +170,3 @@ Ubuntu     | 16.04, Xenial Xerus        | OK (2018-09-15) | Office
 # FYI: How to check OS version in Linux
 cat /etc/os-release
 ```
-## Project

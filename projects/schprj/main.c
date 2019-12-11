@@ -7,11 +7,8 @@
  * Platform:    ATmega328P, 16 MHz, AVR 8-bit Toolchain 3.6.2
  * ---------------------------------------------------------------------
  * Description:
- *    Analog-to-digital conversion with displaying result on LCD and 
- *    transmitting via UART.
- * 
- * 
- * 
+ *    Controlling two servos with analog joystick using ADC value to set
+ *     the PWM output. 
  */
 
 /* Includes ----------------------------------------------------------*/
@@ -20,11 +17,7 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 #include "timer.h"
-#include "lcd.h"
-#include "uart.h"
 #include "gpio.h"
-
-#define UART_BAUD_RATE 9600
 
 uint16_t horizontal = 0;
 uint16_t vertical = 0;
