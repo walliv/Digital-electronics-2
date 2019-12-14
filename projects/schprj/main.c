@@ -12,9 +12,8 @@
  */
 
 /* Includes ----------------------------------------------------------*/
-#include <stdlib.h>             // itoa() function
+#include <stdlib.h>
 #include <avr/io.h>
-#include <util/delay.h>
 #include <avr/interrupt.h>
 #include "timer.h"
 #include "gpio.h"
@@ -63,10 +62,11 @@ int main(void)
     GPIO_write(&TCCR1B,WGM12,1);
     GPIO_write(&TCCR1B,WGM13,1);
 
-    //defines mode when OC1A pin is enabled on compare match and clears when BOTTOM
+    //defines mode when OC1A pin is enabled on compare match and clears on Compare match
     GPIO_write(&TCCR1A, COM1A1,1);
     GPIO_write(&TCCR1A, COM1A0,0);
 
+    //defines mode when OC1B pin is enabled on compare match and clears on Compare match
     GPIO_write(&TCCR1A, COM1B1,1);
     GPIO_write(&TCCR1A, COM1B0,0);
 
