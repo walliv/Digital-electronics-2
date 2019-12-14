@@ -20,8 +20,6 @@
 
 uint16_t horizontal = 0;
 uint16_t vertical = 0;
-char uart_string[4];
-char counter_string[4];
 
 int main(void)
 {
