@@ -28,3 +28,4 @@ All codes were assembled using Visual Studio Code and AVR Toolchain for Linux.
 1. Microchip, [AVR 8-bit Toolchain for Windows, Linux, Mac OS X](https://www.microchip.com/mplab/avr-support/avr-and-arm-toolchains-c-compilers)
 2. Microchip, [ATmega328P](https://www.microchip.com/wwwproducts/en/ATMEGA328P)
 3. Wiring diagram, [Reference](../../docs/Semestral%20project%20wiring%20diagram.jpg)
+4. Demonstration Video, [Reference](https://www.youtube.com/watch?v=-9zHs4ixXVI&feature=share&fbclid=IwAR0mckRXngnoQpiD3khfFMTgiKzgAVPfuol_gFwy1NXcKwhF72GvluQ5ikw)
