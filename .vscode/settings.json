@@ -1,0 +1,13 @@
+{
+    "files.associations": {
+        "*.S": "avr",
+        "firmware.in": "Makefile",
+        "*.lss": "avr",
+        "common.h": "c",
+        "lcd_definitions.h": "c",
+        "lcd.h": "c",
+        "twi.h": "c",
+        "uart.h": "c",
+        "delay.h": "c"
+    }
+}

@@ -6,12 +6,11 @@ TARGET    = DEMO
 MCU       = atmega328p
 MCU_DUDE  = m328p
 F_CPU     = 16000000
-USBPORT   = /dev/ttyUSB0
+USBPORT   = COM3
 
 ## AVR 8-bit toolchain
 # https://www.microchip.com/mplab/avr-support/avr-and-arm-toolchains-c-compilers
-PREFIX = /opt/avr8-gnu-toolchain-linux_x86_64
-
+PREFIX  = C:\Appz\Avr\avr8-gnu-toolchain-win32_x86
 
 
 ##
@@ -26,8 +25,8 @@ AS      = $(BINDIR)/avr-gcc -fdiagnostics-color=always -x assembler-with-cpp
 OBJDUMP = $(BINDIR)/avr-objdump
 OBJCOPY = $(BINDIR)/avr-objcopy
 SIZE    = $(BINDIR)/avr-size
-AVRDUDE = avrdude
-RM      = rm -f
+AVRDUDE = C:\Appz\Avr\avrdude.exe
+RM      = del
 RMFILES = *.o *.hex *.map *.elf *.lss
 
 # Extra flags to give to the C compiler
